@@ -7,20 +7,22 @@ router.use(express.json());
 router.post('/register', function (req, res) {
 
     let data = {
-        id: req.body.id,
-        fname: req.body.fname,
-        lname: req.body.lname,
-        email_address: req.body.email_address,
+        // id: req.body.id,
+        fname: req.body.firstName,
+        lname: req.body.lastName,
+        email_address: req.body.emailAddress,
+        contact_number: req.body.contactNumber,
         password: req.body.password,
-        contact_number: req.body.contact_number,
     };
+
+    // console.log(req);
 
     let query = "INSERT INTO users SET ?";
     // let query = "INSERT INTO users (id, fname, lname, email_address, password, contact_number) VALUES (?,?,?,?,?,?);";
 
     conn.query(query, data, (err, result) => {
         if (err) throw err;
-        res.status(200).send(result);
+        res.send({status: 200, success: "User registered successfully"});
     });
 
 });
@@ -28,15 +30,17 @@ router.post('/register', function (req, res) {
 router.post('/login', (req, res) => {
     
     let data = {
-        email_address: req.body.email_address,
+        email_address: req.body.email,
         password: req.body.password
     };
+
+    console.log(data);
 
     let query = "SELECT * FROM users WHERE email_address = ? AND password = ?";
 
     conn.query(query, [data['email_address'], data['password']], (err, result) => {
         if (err) throw err;
-        res.status(200).send({success: "Login successful"});
+        res.send({status: 200, success: 1});
     });
 
 });
